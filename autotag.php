@@ -15,6 +15,8 @@ function add_tags_to_post_title($post_ID){
      
     $prefix_text = esc_attr(get_option('prefix_text'));
     $suffix_text = esc_attr(get_option('suffix_text'));
+    $suffix_text_after_tags = esc_attr(get_option('suffix_text_after_tags'));
+
 
     $words_to_remove = explode(',', esc_attr(get_option('words_to_remove'))); 
 
@@ -47,7 +49,7 @@ if ($posttags) {
   }
 }
 
-$final_post_title = trim($prefix_text." ".$post_title);
+$final_post_title = trim($prefix_text." ".$post_title." ".$suffix_text);
 
 
 $final_post_title = preg_replace('/\s+/', ' ', $final_post_title);
@@ -62,7 +64,7 @@ if($disable_on_post != "on"){
 $final_post_title = $final_post_title." ".$tags;
 }
 $final_post_title = rtrim(trim($final_post_title),",");
-$final_post_title = $final_post_title." ".$suffix_text;
+$final_post_title = $final_post_title." ".$suffix_text_after_tags;
 $final_post_title = implode(' ', array_unique(explode(' ', $final_post_title)));
 
 
@@ -104,6 +106,7 @@ function register_bp_autotag_plugin_settings() {
 	//register our settings
 	register_setting( 'bp-autotag-plugin-settings-group', 'prefix_text' );
 	register_setting( 'bp-autotag-plugin-settings-group', 'suffix_text' );
+  register_setting( 'bp-autotag-plugin-settings-group', 'suffix_text_after_tags' );
 	register_setting( 'bp-autotag-plugin-settings-group', 'words_to_remove' );
   register_setting( 'bp-autotag-plugin-settings-group', 'disable_on_post' );
 }
@@ -125,6 +128,11 @@ function bp_autotag_plugin_settings_page() {
         <tr valign="top">
         <th scope="row">Suffix Text</th>
         <td><input type="text" name="suffix_text" value="<?php echo esc_attr( get_option('suffix_text') ); ?>" /></td>
+        </tr>  
+        
+        <tr valign="top">
+        <th scope="row">Suffix Text After Tags</th>
+        <td><input type="text" name="suffix_text_after_tags" value="<?php echo esc_attr( get_option('suffix_text_after_tags') ); ?>" /></td>
         </tr>
         
         <tr valign="top">
